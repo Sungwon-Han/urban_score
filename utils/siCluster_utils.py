@@ -1,9 +1,14 @@
 import time
+import os
 import faiss
 import numpy as np
 import torch
 import torch.utils.data as data
 import torchvision.transforms as transforms
+from torch.utils.data import Dataset
+import torch.nn as nn
+import pandas as pd
+from PIL import Image
 
 
 class GPSDataset(Dataset):
@@ -26,15 +31,20 @@ class GPSDataset(Dataset):
             return img1, img2, idx
                 
         return img1, idx
-        
+
+class AUGLoss(nn.Module):
+    def __init__(self):
+        super(AUGLoss, self).__init__()
+
+    def forward(self, x1, x2):
+        b = (x1 - x2)
+        b = b*b
+        b = b.sum(1)
+        b = torch.sqrt(b)
+        return b.sum()
+
+# Below codes are from Deep Clustering for Unsupervised Learning of Visual Features github code        
 def preprocess_features(npdata, pca=256):
-    """Preprocess an array of features.
-    Args:
-        npdata (np.array N * ndim): features to preprocess
-        pca (int): dim of output
-    Returns:
-        np.array of dim N * pca: data PCA-reduced, whitened and L2-normalized
-    """
     _, ndim = npdata.shape
     npdata =  npdata.astype('float32')
 
@@ -51,15 +61,6 @@ def preprocess_features(npdata, pca=256):
     return npdata
 
 def cluster_assign(images_lists, dataset):
-    """Creates a dataset from clustering, with clusters as labels.
-    Args:
-        images_lists (list of list): for each cluster, the list of image indexes
-                                    belonging to this cluster
-        dataset (list): initial dataset
-    Returns:
-        ReassignedDataset(torch.utils.data.Dataset): a dataset with clusters as
-                                                     labels
-    """
     assert images_lists is not None
     pseudolabels = []
     image_indexes = []
@@ -78,13 +79,6 @@ def cluster_assign(images_lists, dataset):
 
 
 def run_kmeans(x, nmb_clusters):
-    """Runs kmeans on 1 GPU.
-    Args:
-        x: data
-        nmb_clusters (int): number of clusters
-    Returns:
-        list: ids of data in each cluster
-    """
     n_data, d = x.shape
 
     # faiss implementation of k-means
@@ -136,10 +130,6 @@ class Kmeans(object):
         self.k = k
 
     def cluster(self, data):
-        """Performs k-means clustering.
-            Args:
-                x_data (np.array N * dim): data to cluster
-        """
         end = time.time()
 
         # PCA-reducing, whitening and L2-normalization
@@ -161,15 +151,6 @@ class Kmeans(object):
         return loss, label
 
     
-class AUGLoss(nn.Module):
-    def __init__(self):
-        super(AUGLoss, self).__init__()
 
-    def forward(self, x1, x2):
-        b = (x1 - x2)
-        b = b*b
-        b = b.sum(1)
-        b = torch.sqrt(b)
-        return b.sum()
 
 

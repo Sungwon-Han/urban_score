@@ -1,15 +1,9 @@
-import csv
 import torch
-import argparse
 import torch.nn as nn
 import torchvision.transforms as transforms
 import torchvision.models as models
-import matplotlib.pyplot as plt
 import torch.backends.cudnn as cudnn
 import pandas as pd
-
-from itertools import permutations
-from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from utils.graph import *
 from utils.siScore_utils import *
@@ -74,10 +68,7 @@ def train(args, epoch, model, optimizer, loader_list, cluster_path_list, device)
 
             # Generating Score
             scores = model(data_zip).squeeze()
-            if args.sigmoid:
-                scores = torch.sigmoid(scores)
-            else:
-                scores = torch.clamp(scores, min=0, max=1)
+            scores = torch.clamp(scores, min=0, max=1)
             score_list = torch.split(scores, args.batch_sz, dim = 0)
             
             # Standard deviation as a loss
@@ -133,12 +124,12 @@ def main(args):
     # Graph generation mode
     if args.graph_config:
         graph_config = args.graph_config  
-    elif args.mode == "district":
-        df = pd.read_csv(args.district_path)
-        hist = pd.read_csv(args.histogram_path, header = None)
-        graph_config = graph_inference_district(df, hist, cluster_number, args.graph_name)
+    elif args.mode == "census":
+        df = pd.read_csv(args.census_path)
+        hist = pd.read_csv(os.path.join('./data', args.dir_name, args.histogram_path), header = None)
+        graph_config = graph_inference_census(df, hist, cluster_number, args.graph_name)
     elif args.mode == "nightlight":
-        grid_df = pd.read_csv(args.grid_path)
+        grid_df = pd.read_csv(os.path.join('./data', args.dir_name, args.grid_path))
         nightlight_df = pd.read_csv(args.nightlight_path)
         graph_config = graph_inference_nightlight(grid_df, nightlight_df, cluster_number, args.graph_name)        
     else:

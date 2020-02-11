@@ -1,5 +1,3 @@
-import argparse
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.parallel
@@ -9,10 +7,9 @@ import torch.utils.data
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
-import torch.nn.functional
+import numpy as np
 from utils.siCluster_utils import *
 from utils.parameters import *
-from torch.autograd import Variable
 
 
 def main(args):
@@ -64,15 +61,15 @@ def main(args):
     else:
         raise ValueError
         
-    clusterloader = torch.utils.data.DataLoader(clusterset, batch_size=256, shuffle=False, num_workers=1)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=256, shuffle=True, num_workers=1, drop_last = True)
+    clusterloader = torch.utils.data.DataLoader(clusterset, batch_size=args.batch, shuffle=False, num_workers=1)
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=args.batch, shuffle=True, num_workers=1, drop_last = True)
     deepcluster = Kmeans(args.nmb_cluster)
     optimizer = torch.optim.Adam(model.parameters(), args.lr)
     
     
     for epoch in range(0, args.epochs):
         print("Epoch : %d"% (epoch))
-        features = compute_features(clusterloader, model, len(clusterset)) 
+        features = compute_features(clusterloader, model, len(clusterset), args.batch) 
         clustering_loss, p_label = deepcluster.cluster(features)
         p_label = p_label.tolist()
         p_label = torch.tensor(p_label).cuda()
@@ -101,7 +98,7 @@ def main(args):
 
             if batch_idx % 20 == 0:
                 print("[BATCH_IDX : ", batch_idx, "LOSS : ",loss.item(), "CE_LOSS : ",ce_loss.item(),"AUG_LOSS : ",aug_loss.item(),"]" )
-    torch.save(model.state_dict(), './model/{}'.format(args.name))
+    torch.save(model.state_dict(), './checkpoint/ckpt_cluster_{}.t7'.format(args.mode))
                                                        
     
 if __name__ == "__main__":

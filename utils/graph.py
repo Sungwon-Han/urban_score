@@ -1,11 +1,9 @@
 import numpy as np
 import pandas as pd
 from scipy import stats
-from sklearn.linear_model import LinearRegression
 from collections import defaultdict 
 from functools import cmp_to_key
 from scipy.optimize import nnls
-from scipy import stats
    
     
 class Graph: 
@@ -108,7 +106,7 @@ def save_graph_config(ordered_list, name):
     
     
     
-def graph_inference_district(df, hist, cluster_num, file_path, col_name = 'TOTPOP_CY'):
+def graph_inference_census(df, hist, cluster_num, file_path, col_name = 'TOTPOP_CY'):
     def numeric_compare(x, y):
         pop_list1 = result_list[x]
         pop_list2 = result_list[y]

@@ -4,9 +4,12 @@ import torch.nn as nn
 import torchvision.transforms as transforms
 import torchvision.models as models
 import torch.backends.cudnn as cudnn
+from torch.utils.data import Dataset
 import pandas as pd
 import warnings
+from utils.siScore_utils import *
 from utils.parameters import *
+import os
 warnings.filterwarnings("ignore")
 
 args = extract_score_parser()
@@ -17,8 +20,8 @@ model.fc = nn.Sequential(nn.Linear(512, 1))
 
 if torch.cuda.device_count() > 1:
     model = nn.DataParallel(model) 
-
-model.load_state_dict(torch.load(args.model), strict = False)
+model_path = os.path.join('./checkpoint', args.model)
+model.load_state_dict(torch.load(model_path)['model'])
 model.to(device)
 print("Load Finished")
 
@@ -39,8 +42,7 @@ class TestDataset(Dataset):
         return image, name
 
 # To enforce the batch normalization during the evaluation
-model.eval()
-    
+model.eval()    
     
 # Testing part
 _mean = [0.485, 0.456, 0.406]
@@ -61,7 +63,11 @@ with torch.no_grad():
         for each_name in name:
             df2.loc[df2['y_x'] == each_name, 'predict'] = scores[count].cpu().data.numpy()
             count += 1
-            
+
+df_predicted2 = df2.loc[df2['predict'] != -1]   
+print("Pearson Correlation (Original)")
+print(df_predicted2.corr(method = 'pearson'))
+
 df_log_predicted2 = df_predicted2.copy()
 df_log_predicted2['area'] = np.log(df_log_predicted2['area'])
 print("Pearson Correlation (Log)")

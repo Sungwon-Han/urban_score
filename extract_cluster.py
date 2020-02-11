@@ -1,5 +1,4 @@
 import os
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.parallel
@@ -19,7 +18,7 @@ import csv
 def extract_city_cluster(args):
     convnet = models.resnet18(pretrained=True)
     convnet = torch.nn.DataParallel(convnet)    
-    ckpt = torch.load('./checkpoint/{}'.formtat(args.city_model))
+    ckpt = torch.load('./checkpoint/{}'.format(args.city_model))
     convnet.load_state_dict(ckpt, strict = False)
     convnet.module.fc = nn.Sequential()
     convnet.cuda()
@@ -33,7 +32,7 @@ def extract_city_cluster(args):
     clusterloader = torch.utils.data.DataLoader(clusterset, batch_size=256, shuffle=False, num_workers=1)
     
     deepcluster = Kmeans(args.city_cnum)
-    features = compute_features(clusterloader, convnet, len(clusterset)) 
+    features = compute_features(clusterloader, convnet, len(clusterset), 256) 
     clustering_loss, p_label = deepcluster.cluster(features)
     labels = p_label.tolist()
     f = open('./meta_data/meta_city.csv', 'r', encoding='utf-8')
@@ -52,7 +51,7 @@ def extract_city_cluster(args):
 def extract_rural_cluster(args):
     convnet = models.resnet18(pretrained=True)
     convnet = torch.nn.DataParallel(convnet)    
-    ckpt = torch.load('./checkpoint/{}'.formtat(args.rural_model))
+    ckpt = torch.load('./checkpoint/{}'.format(args.rural_model))
     convnet.load_state_dict(ckpt, strict = False)
     convnet.module.fc = nn.Sequential()
     convnet.cuda()
@@ -66,7 +65,7 @@ def extract_rural_cluster(args):
     clusterloader = torch.utils.data.DataLoader(clusterset, batch_size=256, shuffle=False, num_workers=1)
     
     deepcluster = Kmeans(args.rural_cnum)
-    features = compute_features(clusterloader, convnet, len(clusterset)) 
+    features = compute_features(clusterloader, convnet, len(clusterset), 256) 
     clustering_loss, p_label = deepcluster.cluster(features)
     labels = p_label.tolist()
     f = open('./meta_data/meta_rural.csv', 'r', encoding='utf-8')
@@ -107,17 +106,17 @@ def main(args):
     total_cluster = city_cluster + rural_cluster + nature_cluster
     cnum = args.city_cnum + args.city_cnum
     cluster_dir = './data/{}/'.format(args.cluster_dir)
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+    if not os.path.exists(cluster_dir):
+        os.makedirs(cluster_dir)
         for i in range(0, cnum + 1):
-            cluster_dir = cluster_dir + str(i)
+            os.makedirs(cluster_dir + str(i))
     else:
         raise ValueError
     
     for img_info in total_cluster:
         cur_dir = './data/kr_data/' + img_info[0]
         new_dir = cluster_dir + str(img_info[1])
-        shutil.copy(cur_dir, cluster_dir)
+        shutil.copy(cur_dir, new_dir)
         
     # make cluster census histogram for census mode
     data_dir = './data/kr_data/'
@@ -144,10 +143,9 @@ def main(args):
     f.close()
     
     # make metadata for cluster && total dataset for eval
-    file_dir = cluster_dir + '*/*.png'
-    file_list = glob.glob(file_dir)
+    file_list = glob.glob("./{}/*/*.png".format(args.cluster_dir))
     grid_dir = cluster_dir + args.grid
-    f = open(meta_dir, 'w', encoding='utf-8')
+    f = open(grid_dir, 'w', encoding='utf-8')
     wr = csv.writer(f)
     wr.writerow(['y_x', 'cluster_id'])
     
@@ -158,14 +156,14 @@ def main(args):
         wr.writerow([file_name, folder_name])
     f.close()
     
+        
+    if not os.path.exists('./data/cluster_kr_unified'):
+        os.makedirs('./data/cluster_kr_unified')
     for i in range(cnum + 1):
         file_dir = cluster_dir + '{}/*.png'
         file_list = glob.glob(file_dir.format(i))    
-    
-    if not os.path.exists('./data/cluster_kr_unified'):
-        os.makedirs('./data/cluster_kr_unified')
-    for cur_dir in file_list:
-        shutil.copy(cur_dir, './data/cluster_kr_unified')
+        for cur_dir in file_list:
+            shutil.copy(cur_dir, './data/cluster_kr_unified')
     
 if __name__ == "__main__":
     args = extract_cluster_parser()
