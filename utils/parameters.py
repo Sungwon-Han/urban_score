@@ -39,8 +39,8 @@ def siScore_parser():
 
 def extract_cluster_parser():
     parser = argparse.ArgumentParser(description='extract_cluster parser')
-    parser.add_argument('--city_model', default='ckpt_cluster_city.t7', type=str, help='cluster model name')
-    parser.add_argument('--rural_model',default='ckpt_cluster_rural.t7', type=str, help='Eval model name')
+    parser.add_argument('--city_model', default='ckpt_cluster_city.t7', type=str, help='city cluster model name')
+    parser.add_argument('--rural_model',default='ckpt_cluster_rural.t7', type=str, help='rural cluster model name')
     parser.add_argument('--city_cnum', default=10, type=int, help='number of city clusters')
     parser.add_argument('--rural_cnum', default=10, type=int, help='number of rural clusters')
     parser.add_argument('--cluster_dir', default = 'cluster_kr', type=str,  help='cluster directory name')
