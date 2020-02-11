@@ -6,10 +6,7 @@ Pytorch Implementation of Learning to score economic development from satellite 
 * Our model is 
 * Our model is
 
-## Model architecture ##
-<center><img src="./fig/model_arch.PNG"> </center>
-
-### Data
+## Data ##
 
 This research utilized two types of data. One is the demographic information on target areas and the other is the corresponding satellite imagery. Both data types were collected from ArcGIS, which provides a publicly available data repository on maps and geographic information.
 
@@ -20,7 +17,7 @@ Satellite images from the tiles of World Imagery
 <li>Visit the ArcGis website <a href="https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9/" rel="nofollow">for the world and high-resolution satellite and aerial imagery</a></li>
 
 
-### Required packages
+## Required packages ##
 The code has been tested running under Python 3.5.2. with the following packages installed (along with their dependencies):
 
 - numpy == 1.15.4
@@ -31,10 +28,12 @@ The code has been tested running under Python 3.5.2. with the following packages
 - scikit-learn == 0.19.1
 - xgboost == 0.90
 
+## Model architecture ##
+<center><img src="./fig/v3_model_summary.png"> </center>
 
-### Part 1. SiCluster
+### Part 1. SiCluster 
 * * *
-##### siCluster.py 
+#### siCluster.py 
 Training siCluster model with default values of hyper-parameter defined in utils/parameters.py, siCluster_parser().
 
 ```
@@ -65,7 +64,7 @@ $ python3 siCluster.py --nmb_cluster 10 --mode city (cluster for city)
 $ python3 siCluster.py --nmb_cluster 10 --mode rural (cluster for rural)
 ``` 
 
-##### extract_cluster.py 
+#### extract_cluster.py 
 Extracting cluster of trained siCluster model with default values of hyper-parameter defined in utils/parameters.py, extract_cluster_parser().
 
 ```
@@ -101,7 +100,8 @@ python3 extract_cluster.py --city_model ckpt_cluster_city.t7 --rural_model ckpt_
 
 ### Part 2,3. SiPog & SiScore
 * * *
-##### SiScore.py
+
+#### SiScore.py
 Learn to score economic development from POG with default values of hyper-parameter defined in utils/parameters.py, siScore_parser(). 
 
 ```
@@ -159,8 +159,27 @@ $ python3 siScore.py --name model_name.ckpt --mode census --graph-name graph_nam
 
 $ python3 siScore.py --name model_name.ckpt --mode nightlight --graph-name graph_name.txt --dir_name cluster_kr --grid-path grid_kr.csv --lamb 30 --alpha 4 --cluster_num 21 (for nightlight POG)
 ```
+#### extract_score.py
+Learn to score economic development from POG with default values of hyper-parameter defined in utils/parameters.py, siScore_parser(). 
 
-### Result
-<center><img src="./fig/model_arch.PNG"> </center>
+```
+usage: extract_score.py [-h] [--model MODEL] [--test TEST]
+
+extract_score parser
+
+optional arguments:
+  -h, --help     show this help message and exit
+  --model MODEL  test model name
+  --test TEST    test data name
+```
+
+##### Example
+```
+python3 extract_score.py --model model_name.ckpt --test kr_GFA.csv
+```
+
+
+## Result ##
+<center><img src="./fig/model_result.png", width="500" height="300"> </center>
 
 
