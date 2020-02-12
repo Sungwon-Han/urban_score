@@ -3,8 +3,10 @@
 Pytorch Implementation of Learning to score economic development from satellite imagery.
 
 ## Highlight ##
-* Our model is 
-* Our model is
+* We propose a novel model to predict economic development in the absence of ground-truth data. The model only requires the generation of a POG. As we demonstrate in this paper, a POG can be constructed easily using either public online resources or simple human annotation.
+* POGs provide an interpretable explanation of which human activity patterns in satellite imagery depict a more significant level of economic development.
+* Our approach provides new experimental insights on how to combine human intelligence with machine intelligence.
+
 
 ## Data ##
 
