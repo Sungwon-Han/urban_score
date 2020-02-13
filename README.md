@@ -186,7 +186,9 @@ python3 extract_score.py --model model_name.ckpt --test kr_GFA.csv
 
 ## Pretrained Model ##
 Currently, we support the pretrained model.
-* [Our model](https://drive.google.com/file/d/1R_iaFOJ3RhIX1_96zBVzSzB-0tiiIu0F/view?usp=sharing)
+* [Human driven](https://drive.google.com/file/d/1R_iaFOJ3RhIX1_96zBVzSzB-0tiiIu0F/view?usp=sharing)
+* [Census driven](https://drive.google.com/file/d/1OnjNJXy1x5e6SJ7RJwbFpKUo-zjpGScv/view?usp=sharing)
+* [Nightlight driven](https://drive.google.com/file/d/12J7c6B3NQ4uk1xz5TMk_I72qC94yNpaE/view?usp=sharing)
 * [Pretrained model with 1000 labels](https://drive.google.com/file/d/1gj5euwIzxpv8uZ7ZZjPPfYDsc5TAWVbM/view?usp=sharing)
 
 ## Result ##
