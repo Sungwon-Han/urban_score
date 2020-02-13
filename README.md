@@ -28,7 +28,11 @@ The code has been tested running under Python 3.5.2. with the following packages
 - torchnet == 0.0.4
 - torchvision == 0.2.2.post3
 - scikit-learn == 0.19.1
-- xgboost == 0.90
+- scipy == 1.3.0
+- faiss-gpu == 1.5.3
+- numpy == 1.16.4
+- scikit-image == 0.15.0
+- Pillow == 6.0.0
 
 ## Model architecture ##
 <center><img src="./fig/v3_model_summary.png"> </center>
