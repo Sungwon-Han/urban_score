@@ -185,11 +185,9 @@ python3 extract_score.py --model model_name.ckpt --test kr_GFA.csv
 ```
 
 ## Pretrained Model ##
-Currently, we support the pretrained model for our model.
-* [Human model](https://drive.google.com/file/d/1cABTquqOl5N2Wbchxs0-DBI6OVfnqY5J/view?usp=sharing)
-* [Census model](https://drive.google.com/file/d/1cABTquqOl5N2Wbchxs0-DBI6OVfnqY5J/view?usp=sharing)
-* [Nightlight model](https://drive.google.com/file/d/1cABTquqOl5N2Wbchxs0-DBI6OVfnqY5J/view?usp=sharing)
-* [Pretrained model with 1000 labels](https://drive.google.com/file/d/1H3ppCkPQNHFEYQS4PLuV26Cp3HpbG4Nb/view?usp=sharing)
+Currently, we support the pretrained model.
+* [our model](https://drive.google.com/file/d/1R_iaFOJ3RhIX1_96zBVzSzB-0tiiIu0F/view?usp=sharing)
+* [Pretrained model with 1000 labels](https://drive.google.com/file/d/1gj5euwIzxpv8uZ7ZZjPPfYDsc5TAWVbM/view?usp=sharing)
 
 ## Result ##
 <center><img src="./fig/model_result.png", width="500" height="300"> </center>
