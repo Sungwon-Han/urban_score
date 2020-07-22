@@ -11,7 +11,7 @@ Pytorch Implementation of Learning to score economic development from satellite 
 ## Data ##
 
 This research collected satellite imagery data from ArcGIS, which provides a publicly available data repository on maps and geographic information.
-We provide a guide for downloading data utilized in our research. Please look at the ReadMe file in "data" directory. (data/readme_data.md, data/Data_collection_guide.ipynb)
+We provide a guide for downloading data utilized in our research. Please look at the ReadMe file in "data" directory. (data/README.md, data/Data_collection_guide.ipynb)
 
 Satellite images from the tiles of World Imagery
 <li>Visit the ArcGis website <a href="https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9/" rel="nofollow">for the world and high-resolution satellite and aerial imagery</a></li>
