@@ -10,11 +10,9 @@ Pytorch Implementation of Learning to score economic development from satellite 
 
 ## Data ##
 
-This research utilized two types of data. One is the demographic information on target areas and the other is the corresponding satellite imagery. Both data types were collected from ArcGIS, which provides a publicly available data repository on maps and geographic information.
+This research collected satellite imagery data from ArcGIS, which provides a publicly available data repository on maps and geographic information.
+We provide a guide for downloading data utilized in our research. Please look at the ReadMe file in "data" directory. (data/readme_data.md, data/Data_collection_guide.ipynb)
 
-Demographic information is called the Esri Advanced Demographics is accessible by the ArcGIS GeoEnrichment Service API.
-<li>Visit the ArcGis website <a href="https://doc.arcgis.com/en/Esri-demographics/data/global-intro.htm" rel="nofollow">for a comprehensive set of ready-to-use demographic layers</a></li>
-<br>
 Satellite images from the tiles of World Imagery
 <li>Visit the ArcGis website <a href="https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9/" rel="nofollow">for the world and high-resolution satellite and aerial imagery</a></li>
 
