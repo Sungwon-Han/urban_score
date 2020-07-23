@@ -104,7 +104,7 @@ def main(args):
     rural_cluster = extract_rural_cluster(args)
     nature_cluster = extract_nature_cluster(args)
     total_cluster = city_cluster + rural_cluster + nature_cluster
-    cnum = args.city_cnum + args.city_cnum
+    cnum = args.city_cnum + args.rural_cnum
     cluster_dir = './data/{}/'.format(args.cluster_dir)
     if not os.path.exists(cluster_dir):
         os.makedirs(cluster_dir)
